@@ -1,0 +1,10 @@
+{
+  "name": "seoul-subway-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "서울 지하철 승하차 데이터를 시각화하는 정적 웹 대시보드",
+  "scripts": {
+    "test": "node --test"
+  }
+}

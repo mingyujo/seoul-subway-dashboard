@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>서울 지하철 승하차 대시보드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>서울 지하철 승하차 대시보드</h1>
+    <p class="data-source">데이터 출처: 서울 열린데이터광장 서울시 지하철호선별 역별 승하차 인원 정보</p>
+  </header>
+
+  <main>
+    <section class="filters" aria-label="필터">
+      <div class="filter-item">
+        <label for="start-date">
+          <svg class="filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false">
+            <rect x="3.5" y="5" width="17" height="15" rx="2" stroke-linejoin="round" />
+            <line x1="3.5" y1="9.5" x2="20.5" y2="9.5" />
+            <line x1="7.5" y1="3" x2="7.5" y2="6.5" stroke-linecap="round" />
+            <line x1="16.5" y1="3" x2="16.5" y2="6.5" stroke-linecap="round" />
+          </svg>
+          시작일
+        </label>
+        <input type="date" id="start-date" />
+      </div>
+      <div class="filter-item">
+        <label for="end-date">
+          <svg class="filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false">
+            <rect x="3.5" y="5" width="17" height="15" rx="2" stroke-linejoin="round" />
+            <line x1="3.5" y1="9.5" x2="20.5" y2="9.5" />
+            <line x1="7.5" y1="3" x2="7.5" y2="6.5" stroke-linecap="round" />
+            <line x1="16.5" y1="3" x2="16.5" y2="6.5" stroke-linecap="round" />
+          </svg>
+          종료일
+        </label>
+        <input type="date" id="end-date" />
+      </div>
+      <div class="filter-item">
+        <label for="line-filter">
+          <svg class="filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false">
+            <line x1="3" y1="12" x2="21" y2="12" stroke-linecap="round" />
+            <circle cx="6.5" cy="12" r="1.6" fill="currentColor" stroke="none" />
+            <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+            <circle cx="17.5" cy="12" r="1.6" fill="currentColor" stroke="none" />
+          </svg>
+          노선
+        </label>
+        <select id="line-filter">
+          <option value="all">전체 노선</option>
+        </select>
+      </div>
+    </section>
+
+    <p id="status-message" class="status-message" role="status" hidden></p>
+
+    <section class="kpi-section" aria-label="요약 지표">
+      <div class="kpi-card">
+        <span class="kpi-label">총 승차 인원</span>
+        <span class="kpi-value" id="kpi-boarding">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">총 하차 인원</span>
+        <span class="kpi-value" id="kpi-alighting">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">총 이용량</span>
+        <span class="kpi-value" id="kpi-total">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">평일 일평균</span>
+        <span class="kpi-value" id="kpi-weekday-avg">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">주말 일평균</span>
+        <span class="kpi-value" id="kpi-weekend-avg">0</span>
+      </div>
+    </section>
+
+    <section class="charts-section" aria-label="차트">
+      <div class="chart-card">
+        <h2>이용객 상위 10개 역 (승차+하차)</h2>
+        <canvas id="top-stations-chart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h2>노선별 이용량 합계</h2>
+        <canvas id="line-totals-chart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h2>날짜별 이용량 추이</h2>
+        <canvas id="daily-trend-chart"></canvas>
+      </div>
+    </section>
+
+    <section class="table-section" aria-label="일자별 데이터 표">
+      <h2>일자별 상세 데이터</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>승차 인원</th>
+              <th>하차 인원</th>
+              <th>합계</th>
+            </tr>
+          </thead>
+          <tbody id="data-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
