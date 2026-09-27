@@ -2,6 +2,7 @@
 
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -143,11 +144,21 @@ class ComputeSummaryTests(unittest.TestCase):
 
 
 class RealCsvIntegrationTests(unittest.TestCase):
-    """실제 data/raw CSV로 전체 파이프라인을 실행해 기준값과 대조한다."""
+    """실제 data/raw CSV로 전체 파이프라인을 실행해 기준값과 대조한다.
+
+    출력 JSON은 임시 디렉터리에 생성해, 테스트 실행이 추적 중인
+    data/processed/dashboard_data.json을 건드리지 않도록 한다.
+    """
 
     @classmethod
     def setUpClass(cls):
-        cls.metadata, cls.summary, cls.output_path = analyze.run()
+        cls._tmpdir = tempfile.TemporaryDirectory()
+        tmp_output_path = Path(cls._tmpdir.name) / "dashboard_data.json"
+        cls.metadata, cls.summary, cls.output_path = analyze.run(output_path=tmp_output_path)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._tmpdir.cleanup()
 
     def test_valid_row_count_is_19133(self):
         self.assertEqual(self.metadata["valid_rows"], 19133)
